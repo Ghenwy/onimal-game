@@ -96,17 +96,31 @@ describe('petStore', () => {
     const pastTime = Date.now() - (60 * 1000) // 1 minute ago
     mockPet.lastCared = pastTime
     gameState.addPet(mockPet)
-    
+
     petStore.updateNeeds('test-pet-1')
-    
+
     const state = get(gameState)
     const updatedPet = state.pets[0]
-    
+
     // After 1 minute, needs should decay
     expect(updatedPet.needs.hunger).toBeLessThan(50)
     expect(updatedPet.needs.happiness).toBeLessThan(50)
     expect(updatedPet.needs.energy).toBeLessThan(50)
     expect(updatedPet.needs.health).toBeLessThan(50)
+  })
+
+  it('should not update lastCared when only degrading needs', () => {
+    const mockPet = createMockPet()
+    const pastTime = Date.now() - (60 * 1000) // 1 minute ago
+    mockPet.lastCared = pastTime
+    gameState.addPet(mockPet)
+
+    petStore.updateNeeds('test-pet-1')
+
+    const state = get(gameState)
+    const updatedPet = state.pets[0]
+
+    expect(updatedPet.lastCared).toBe(pastTime)
   })
 
   it('should not let needs go below 0', () => {
