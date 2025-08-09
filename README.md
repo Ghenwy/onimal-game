@@ -58,8 +58,8 @@
 ## 🚀 **Quick Start**
 
 ### **Play the Game**
-1. Download `onimal-standalone.html`
-2. Open in any modern browser
+1. Generate `onimal-standalone.html` with `npm run build:standalone` (see [docs/standalone-build.md](docs/standalone-build.md))
+2. Open the generated file in any modern browser
 3. Start caring for your first pet!
 
 ### **Development Setup**
