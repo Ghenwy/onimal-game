@@ -9,7 +9,7 @@ function createPetStore() {
 
   return {
     subscribe,
-    updateNeeds: (petId) => {
+    updateNeeds: (petId, isDirectCare = false) => {
       gameState.update(state => {
         const pet = state.pets.find(p => p.id === petId);
         if (!pet) return state;
@@ -26,9 +26,9 @@ function createPetStore() {
 
         return {
           ...state,
-          pets: state.pets.map(p => 
-            p.id === petId 
-              ? { ...p, needs: needsDecay, lastCared: now }
+          pets: state.pets.map(p =>
+            p.id === petId
+              ? { ...p, needs: needsDecay, lastCared: isDirectCare ? now : p.lastCared }
               : p
           )
         };
