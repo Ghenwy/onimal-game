@@ -1,6 +1,14 @@
 export type PetSpecies = 'canine' | 'feline' | 'avian' | 'reptile' | 'amphibian';
 export type PetStage = 'cria' | 'joven' | 'adulto' | 'veterano';
-export type PetAnimation = 'idle' | 'happy' | 'sad' | 'eating' | 'sleeping' | 'playing';
+export const PET_ANIMATIONS = [
+  'idle',
+  'happy',
+  'sad',
+  'eating',
+  'sleeping',
+  'playing'
+] as const;
+export type PetAnimation = (typeof PET_ANIMATIONS)[number];
 
 export interface PetNeeds {
   hunger: number;
