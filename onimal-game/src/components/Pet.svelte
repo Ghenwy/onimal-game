@@ -36,7 +36,7 @@
   }
 </script>
 
-<div class="pet-container {pet.stage}" role="button" tabindex="0" on:click={selectPet} on:keydown={(e) => e.key === 'Enter' && selectPet()}>
+<div class={"pet-container pet-" + pet.stage} role="button" tabindex="0" on:click={selectPet} on:keydown={(e) => e.key === 'Enter' && selectPet()}>
   <div class="pet-header">
     <h3>{pet.name}</h3>
     <span class="pet-level">Nivel {pet.level}</span>
