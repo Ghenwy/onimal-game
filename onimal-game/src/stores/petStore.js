@@ -1,5 +1,8 @@
-import { writable, derived } from 'svelte/store';
+import { writable, derived, get } from 'svelte/store';
 import { gameState } from './gameState.js';
+
+const FEED_COST = 10;
+const PLAY_COST = 5;
 
 function createPetStore() {
   const { subscribe, update } = writable([]);
@@ -32,14 +35,18 @@ function createPetStore() {
       });
     },
     feedPet: (petId) => {
+      if (get(gameState).coins < FEED_COST) {
+        console.warn('No tienes suficientes monedas para alimentar a tu mascota.');
+        return false;
+      }
       gameState.update(state => ({
         ...state,
-        pets: state.pets.map(pet => 
-          pet.id === petId 
-            ? { 
-                ...pet, 
-                needs: { 
-                  ...pet.needs, 
+        pets: state.pets.map(pet =>
+          pet.id === petId
+            ? {
+                ...pet,
+                needs: {
+                  ...pet.needs,
                   hunger: Math.min(100, pet.needs.hunger + 25),
                   happiness: Math.min(100, pet.needs.happiness + 5)
                 },
@@ -47,18 +54,23 @@ function createPetStore() {
               }
             : pet
         ),
-        coins: Math.max(0, state.coins - 10)
+        coins: state.coins - FEED_COST
       }));
+      return true;
     },
     playWithPet: (petId) => {
+      if (get(gameState).coins < PLAY_COST) {
+        console.warn('No tienes suficientes monedas para jugar con tu mascota.');
+        return false;
+      }
       gameState.update(state => ({
         ...state,
-        pets: state.pets.map(pet => 
-          pet.id === petId 
-            ? { 
-                ...pet, 
-                needs: { 
-                  ...pet.needs, 
+        pets: state.pets.map(pet =>
+          pet.id === petId
+            ? {
+                ...pet,
+                needs: {
+                  ...pet.needs,
                   happiness: Math.min(100, pet.needs.happiness + 20),
                   energy: Math.max(0, pet.needs.energy - 10)
                 },
@@ -67,8 +79,10 @@ function createPetStore() {
                 lastCared: Date.now()
               }
             : pet
-        )
+        ),
+        coins: state.coins - PLAY_COST
       }));
+      return true;
     },
     restPet: (petId) => {
       gameState.update(state => ({
