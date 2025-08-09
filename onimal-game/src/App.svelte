@@ -1,6 +1,7 @@
 <script>
   import Pet from './components/Pet.svelte';
   import { gameState } from './stores/gameState.js';
+  import { tryAddPet } from './lib/createPet.js';
   import { onMount } from 'svelte';
   
   onMount(() => {
@@ -8,32 +9,8 @@
   });
 
   function addTestPet() {
-    const newPet = {
-      id: `pet-${Date.now()}`,
-      name: `Mascota ${$gameState.pets.length + 1}`,
-      species: ['canine', 'feline', 'avian', 'reptile', 'amphibian'][Math.floor(Math.random() * 5)],
-      stage: 'cria',
-      level: 1,
-      experience: 0,
-      needs: {
-        hunger: 80,
-        happiness: 90,
-        energy: 100,
-        health: 100
-      },
-      currentAnimation: 'idle',
-      birthTime: Date.now(),
-      lastCared: Date.now(),
-      stats: {
-        strength: 10,
-        intelligence: 10,
-        agility: 10,
-        charisma: 10
-      }
-    };
-    
-    gameState.addPet(newPet);
-    gameState.save();
+    const name = `Mascota ${$gameState.pets.length + 1}`;
+    tryAddPet(name);
   }
 </script>
 
