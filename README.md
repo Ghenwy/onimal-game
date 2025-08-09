@@ -6,6 +6,8 @@
 [![Tests](https://img.shields.io/badge/Tests-36/36%20Passing-brightgreen)](#)
 [![Tech Stack](https://img.shields.io/badge/Tech-HTML5%20%7C%20CSS3%20%7C%20JavaScript-blue)](#)
 
+> **Note:** The game source code lives in the `onimal-game/` subdirectory of this repository. The root folder hosts documentation and meta files.
+
 ## 🎮 **Play Now**
 
 **[▶️ PLAY ONIMAL](https://ghenwy.github.io/onimal-game)** *(Coming Soon)*

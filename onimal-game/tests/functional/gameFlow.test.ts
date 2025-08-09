@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { get } from 'svelte/store'
-import { gameState } from '../../src/stores/gameState.js'
-import { petStore } from '../../src/stores/petStore.js'
+import { gameState } from '../../src/stores/gameState.ts'
+import { petStore } from '../../src/stores/petStore.ts'
 
 describe('Game Flow Integration Tests', () => {
   beforeEach(() => {
@@ -38,8 +38,8 @@ describe('Game Flow Integration Tests', () => {
     expect(stateAfterAdoption.selectedPetId).toBe('pet-flow-test')
 
     // 4. Feed the pet multiple times
-    petStore.feedPet('pet-flow-test')
-    petStore.feedPet('pet-flow-test')
+    expect(petStore.feedPet('pet-flow-test').success).toBe(true)
+    expect(petStore.feedPet('pet-flow-test').success).toBe(true)
 
     const stateAfterFeeding = get(gameState)
     const fedPet = stateAfterFeeding.pets[0]
@@ -47,7 +47,7 @@ describe('Game Flow Integration Tests', () => {
     expect(stateAfterFeeding.coins).toBe(80) // 100 - 20 (2 feedings)
 
     // 5. Play with pet to gain experience
-    petStore.playWithPet('pet-flow-test')
+    expect(petStore.playWithPet('pet-flow-test').success).toBe(true)
     
     const stateAfterPlaying = get(gameState)
     const playedPet = stateAfterPlaying.pets[0]
@@ -102,7 +102,7 @@ describe('Game Flow Integration Tests', () => {
     expect(state.pets).toHaveLength(2)
 
     // Feed only the first pet
-    petStore.feedPet('pet-1')
+    expect(petStore.feedPet('pet-1').success).toBe(true)
 
     const stateAfterFeeding = get(gameState)
     expect(stateAfterFeeding.pets[0].needs.hunger).toBeGreaterThan(50)
@@ -110,7 +110,7 @@ describe('Game Flow Integration Tests', () => {
 
     // Select and interact with second pet
     gameState.selectPet('pet-2')
-    petStore.playWithPet('pet-2')
+    expect(petStore.playWithPet('pet-2').success).toBe(true)
 
     const finalState = get(gameState)
     expect(finalState.selectedPetId).toBe('pet-2')

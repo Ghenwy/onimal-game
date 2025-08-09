@@ -1,11 +1,13 @@
-<script>
+<script lang="ts">
   import Pet from './components/Pet.svelte';
-  import { gameState } from './stores/gameState.js';
-  import { tryAddPet } from './lib/createPet.js';
+  import { gameState } from './stores/gameState.ts';
+  import { tryAddPet } from './lib/createPet.ts';
+  import { startAutoUpdate } from './stores/petStore.ts';
   import { onMount } from 'svelte';
-  
+
   onMount(() => {
     gameState.load();
+    startAutoUpdate();
   });
 
   function addTestPet() {

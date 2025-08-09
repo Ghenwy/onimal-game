@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { get } from 'svelte/store'
-import { petStore } from '../../src/stores/petStore.js'
-import { gameState } from '../../src/stores/gameState.js'
+import { petStore } from '../../src/stores/petStore.ts'
+import { gameState } from '../../src/stores/gameState.ts'
 
 describe('petStore', () => {
   beforeEach(() => {
@@ -32,7 +32,7 @@ describe('petStore', () => {
     const state = get(gameState)
     const updatedPet = state.pets[0]
 
-    expect(result).toBe(true)
+    expect(result.success).toBe(true)
     expect(updatedPet.needs.hunger).toBe(75) // 50 + 25
     expect(updatedPet.needs.happiness).toBe(55) // 50 + 5
     expect(state.coins).toBe(90) // 100 - 10
@@ -43,18 +43,16 @@ describe('petStore', () => {
     gameState.addPet(mockPet)
     gameState.update(state => ({ ...state, coins: 5 }))
 
-    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const result = petStore.feedPet('test-pet-1')
 
     const state = get(gameState)
     const updatedPet = state.pets[0]
 
-    expect(result).toBe(false)
+    expect(result.success).toBe(false)
+    expect(result.reason).toBe('INSUFFICIENT_COINS')
     expect(updatedPet.needs.hunger).toBe(50) // unchanged
     expect(updatedPet.needs.happiness).toBe(50) // unchanged
     expect(state.coins).toBe(5) // unchanged
-    expect(warnSpy).toHaveBeenCalled()
-    warnSpy.mockRestore()
   })
 
   it('should not exceed max hunger when feeding', () => {
@@ -79,7 +77,7 @@ describe('petStore', () => {
     const state = get(gameState)
     const updatedPet = state.pets[0]
 
-    expect(result).toBe(true)
+    expect(result.success).toBe(true)
     expect(updatedPet.needs.happiness).toBe(70) // 50 + 20
     expect(updatedPet.needs.energy).toBe(40) // 50 - 10
     expect(updatedPet.experience).toBe(5) // 0 + 5
@@ -92,19 +90,17 @@ describe('petStore', () => {
     gameState.addPet(mockPet)
     gameState.update(state => ({ ...state, coins: 3 }))
 
-    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const result = petStore.playWithPet('test-pet-1')
 
     const state = get(gameState)
     const updatedPet = state.pets[0]
 
-    expect(result).toBe(false)
+    expect(result.success).toBe(false)
+    expect(result.reason).toBe('INSUFFICIENT_COINS')
     expect(updatedPet.needs.happiness).toBe(50) // unchanged
     expect(updatedPet.needs.energy).toBe(50) // unchanged
     expect(updatedPet.experience).toBe(0)
     expect(state.coins).toBe(3) // unchanged
-    expect(warnSpy).toHaveBeenCalled()
-    warnSpy.mockRestore()
   })
 
   it('should rest pet correctly', () => {
