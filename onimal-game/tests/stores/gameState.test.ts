@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { get } from 'svelte/store'
 import { gameState } from '../../src/stores/gameState.js'
 
@@ -110,5 +110,35 @@ describe('gameState store', () => {
     
     expect(state.coins).toBe(200)
     expect(state.level).toBe(2)
+  })
+
+  describe('when localStorage is unavailable', () => {
+    let originalStorage: Storage | undefined
+    let warnSpy: ReturnType<typeof vi.spyOn>
+
+    beforeEach(() => {
+      originalStorage = globalThis.localStorage
+      // @ts-ignore
+      delete globalThis.localStorage
+      warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      gameState.reset()
+    })
+
+    afterEach(() => {
+      globalThis.localStorage = originalStorage as any
+      warnSpy.mockRestore()
+    })
+
+    it('save should not throw and should warn', () => {
+      expect(() => gameState.save()).not.toThrow()
+      expect(warnSpy).toHaveBeenCalled()
+    })
+
+    it('load should not throw and keep default state', () => {
+      expect(() => gameState.load()).not.toThrow()
+      const state = get(gameState)
+      expect(state.coins).toBe(100)
+      expect(warnSpy).toHaveBeenCalled()
+    })
   })
 })

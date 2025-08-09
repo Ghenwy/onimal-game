@@ -38,14 +38,32 @@ function createGameState() {
     })),
     save: () => update(state => {
       const newState = { ...state, lastSave: Date.now() };
-      localStorage.setItem('onimal-game-state', JSON.stringify(newState));
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('onimal-game-state', JSON.stringify(newState));
+        } else {
+          console.warn('localStorage is not available. Game state was not saved.');
+        }
+      } catch (error) {
+        console.warn('Failed to save game state to localStorage:', error);
+      }
       return newState;
     }),
     load: () => {
-      const saved = localStorage.getItem('onimal-game-state');
-      if (saved) {
-        const state = JSON.parse(saved);
-        set(state);
+      try {
+        if (typeof localStorage !== 'undefined') {
+          const saved = localStorage.getItem('onimal-game-state');
+          if (saved) {
+            const state = JSON.parse(saved);
+            set(state);
+          }
+        } else {
+          console.warn('localStorage is not available. Using default state.');
+          set(initialGameState);
+        }
+      } catch (error) {
+        console.warn('Failed to load game state from localStorage:', error);
+        set(initialGameState);
       }
     },
     reset: () => set(initialGameState)
