@@ -70,6 +70,11 @@ npm install
 npm run dev
 ```
 
+### 📦 Assets
+
+Los íconos SVG se almacenan en `onimal-game/src/assets/icons/`.
+Importa las imágenes usando rutas relativas dentro de los componentes Svelte.
+
 ## 📱 **Screenshots**
 
 *Coming soon - Game screenshots and GIFs*

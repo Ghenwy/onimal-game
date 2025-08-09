@@ -1,6 +1,10 @@
 <script>
   import { petStore } from '../stores/petStore.js';
   import { gameState } from '../stores/gameState.js';
+  import pawIcon from '../assets/icons/paw.svg';
+  import appleIcon from '../assets/icons/apple.svg';
+  import ballIcon from '../assets/icons/ball.svg';
+  import sleepIcon from '../assets/icons/sleep.svg';
   
   export let pet;
   
@@ -36,7 +40,7 @@
   
   <div class="pet-avatar">
     <div class="pet-sprite {pet.species} {pet.currentAnimation}">
-      🐾
+      <img src={pawIcon} alt="Pet sprite" class="sprite-icon" />
     </div>
   </div>
 
@@ -76,13 +80,16 @@
 
   <div class="pet-actions">
     <button on:click|stopPropagation={feedPet} class="action-btn feed">
-      🍎 Alimentar
+      <img src={appleIcon} alt="Alimentar" class="action-icon" />
+      Alimentar
     </button>
     <button on:click|stopPropagation={playWithPet} class="action-btn play">
-      🎾 Jugar
+      <img src={ballIcon} alt="Jugar" class="action-icon" />
+      Jugar
     </button>
     <button on:click|stopPropagation={restPet} class="action-btn rest">
-      😴 Descansar
+      <img src={sleepIcon} alt="Descansar" class="action-icon" />
+      Descansar
     </button>
   </div>
 </div>
@@ -130,8 +137,12 @@
   }
 
   .pet-sprite {
-    font-size: 4rem;
     transition: all 0.3s ease-in-out;
+  }
+
+  .sprite-icon {
+    width: 4rem;
+    height: 4rem;
   }
 
   .pet-sprite.playing {
@@ -199,6 +210,13 @@
     cursor: pointer;
     transition: all 0.15s ease-in-out;
     min-height: 44px;
+  }
+
+  .action-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-right: 4px;
+    vertical-align: middle;
   }
 
   .action-btn.feed {
