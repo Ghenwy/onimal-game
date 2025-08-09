@@ -1,7 +1,15 @@
 <script>
   import { petStore } from '../stores/petStore.js';
   import { gameState } from '../stores/gameState.js';
-  
+
+  const spritePaths = {
+    canine: '/sprites/dog.svg',
+    feline: '/sprites/cat.svg',
+    avian: '/sprites/bird.svg',
+    reptile: '/sprites/reptile.svg',
+    amphibian: '/sprites/amphibian.svg'
+  } as const;
+
   export let pet;
   
   $: needsStatus = {
@@ -35,9 +43,11 @@
   </div>
   
   <div class="pet-avatar">
-    <div class="pet-sprite {pet.species} {pet.currentAnimation}">
-      🐾
-    </div>
+    <img
+      class="pet-sprite {pet.species} {pet.currentAnimation}"
+      src={spritePaths[pet.species]}
+      alt={pet.species}
+    />
   </div>
 
   <div class="pet-needs">
@@ -130,7 +140,9 @@
   }
 
   .pet-sprite {
-    font-size: 4rem;
+    width: 4rem;
+    height: 4rem;
+    display: block;
     transition: all 0.3s ease-in-out;
   }
 
