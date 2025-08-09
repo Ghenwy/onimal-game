@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { get } from 'svelte/store'
-import { gameState } from '../../src/stores/gameState.js'
+import { gameState } from '../../src/stores/gameState.ts'
 
 describe('gameState store', () => {
   beforeEach(() => {
@@ -111,6 +111,19 @@ describe('gameState store', () => {
     expect(state.coins).toBe(200)
     expect(state.level).toBe(2)
   })
+
+  it('should fall back to initial state when loaded data is invalid', () => {
+    const mockLocalStorage = {
+      'onimal-game-state': JSON.stringify({ invalid: true })
+    };
+
+    localStorage.getItem = vi.fn((key) => mockLocalStorage[key] || null);
+
+    gameState.load();
+    const state = get(gameState);
+    expect(state.coins).toBe(100);
+    expect(state.pets).toHaveLength(0);
+  });
 
   describe('when localStorage is unavailable', () => {
     let originalStorage: Storage | undefined

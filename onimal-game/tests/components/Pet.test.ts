@@ -62,7 +62,7 @@ describe('Pet Component Logic', () => {
   })
 
   it('should have valid stage for level', () => {
-    const validStages = ['cria', 'joven', 'adulto', 'anciano']
+    const validStages = ['cria', 'joven', 'adulto', 'veterano']
     expect(validStages).toContain(mockPet.stage)
   })
 

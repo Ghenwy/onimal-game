@@ -5,3 +5,8 @@ declare module "*.svelte" {
   const component: ComponentType<SvelteComponent>;
   export default component;
 }
+
+declare module '*.svg' {
+  const src: string;
+  export default src;
+}

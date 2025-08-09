@@ -1,13 +1,19 @@
-<script>
-  import { petStore } from '../stores/petStore.js';
-  import { gameState } from '../stores/gameState.js';
+<script lang="ts">
+  import { petStore } from '../stores/petStore.ts';
+  import { gameState } from '../stores/gameState.ts';
+
+  import canine from '../assets/sprites/dog.svg';
+  import feline from '../assets/sprites/cat.svg';
+  import avian from '../assets/sprites/bird.svg';
+  import reptile from '../assets/sprites/reptile.svg';
+  import amphibian from '../assets/sprites/amphibian.svg';
 
   const spritePaths = {
-    canine: '/sprites/dog.svg',
-    feline: '/sprites/cat.svg',
-    avian: '/sprites/bird.svg',
-    reptile: '/sprites/reptile.svg',
-    amphibian: '/sprites/amphibian.svg'
+    canine,
+    feline,
+    avian,
+    reptile,
+    amphibian
   } as const;
 
   export let pet;
