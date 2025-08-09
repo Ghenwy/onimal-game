@@ -36,7 +36,15 @@
   }
 </script>
 
-<div class="pet-container {pet.stage}" role="button" tabindex="0" on:click={selectPet} on:keydown={(e) => e.key === 'Enter' && selectPet()}>
+<div
+  class="pet-container {pet.stage}"
+  role="button"
+  tabindex="0"
+  aria-label={`Seleccionar ${pet.name}`}
+  aria-pressed={$gameState.selectedPetId === pet.id}
+  on:click={selectPet}
+  on:keydown={(e) => ['Enter', ' '].includes(e.key) && selectPet()}
+>
   <div class="pet-header">
     <h3>{pet.name}</h3>
     <span class="pet-level">Nivel {pet.level}</span>

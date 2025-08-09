@@ -1,4 +1,6 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
+import { get } from 'svelte/store'
+import { gameState } from '../../src/stores/gameState.js'
 
 // Test simplificado para componente Pet sin mounting DOM
 // Estos tests verifican la lógica en lugar del rendering
@@ -99,5 +101,27 @@ describe('Pet Component Logic', () => {
   it('should maintain pet ID uniqueness format', () => {
     expect(mockPet.id).toMatch(/^[a-zA-Z0-9-_]+$/)
     expect(mockPet.id.length).toBeGreaterThan(0)
+  })
+})
+
+describe('Pet Component Accessibility', () => {
+  beforeEach(() => {
+    gameState.reset()
+  })
+
+  it('should select pet when Space key is pressed', () => {
+    const mockPetId = 'access-pet-1'
+    const handler = (e: KeyboardEvent) => {
+      if (['Enter', ' '].includes(e.key)) {
+        gameState.selectPet(mockPetId)
+      }
+    }
+
+    const element = document.createElement('div')
+    element.addEventListener('keydown', handler)
+    const event = new KeyboardEvent('keydown', { key: ' ' })
+    element.dispatchEvent(event)
+
+    expect(get(gameState).selectedPetId).toBe(mockPetId)
   })
 })
