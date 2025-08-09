@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest'
+import fs from 'fs'
+import path from 'path'
 
 // Test simplificado para componente Pet sin mounting DOM
 // Estos tests verifican la lógica en lugar del rendering
@@ -61,8 +63,17 @@ describe('Pet Component Logic', () => {
   })
 
   it('should have valid stage for level', () => {
-    const validStages = ['cria', 'joven', 'adulto', 'anciano']
+    const validStages = ['cria', 'joven', 'adulto', 'veterano']
     expect(validStages).toContain(mockPet.stage)
+  })
+
+  it('should define CSS class for each stage', () => {
+    const source = fs.readFileSync(path.join(__dirname, '../../src/components/Pet.svelte'), 'utf-8')
+    const stages = ['cria', 'joven', 'adulto', 'veterano'] as const
+    stages.forEach(stage => {
+      expect(source).toContain(`.pet-${stage}`)
+    })
+    expect(source).toMatch(/class=\{"pet-container pet-" \+ pet\.stage\}/)
   })
 
   it('should calculate pet age correctly', () => {
