@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { PET_ANIMATIONS } from '../../src/lib/types/pet'
 
 // Test simplificado para componente Pet sin mounting DOM
 // Estos tests verifican la lógica en lugar del rendering
@@ -78,8 +79,12 @@ describe('Pet Component Logic', () => {
   })
 
   it('should validate animation state', () => {
-    const validAnimations = ['idle', 'eating', 'playing', 'sleeping', 'happy']
-    expect(validAnimations).toContain(mockPet.currentAnimation)
+    expect(PET_ANIMATIONS).toContain(mockPet.currentAnimation)
+  })
+
+  it.each(PET_ANIMATIONS)('should accept %s animation', animation => {
+    const pet = { ...mockPet, currentAnimation: animation }
+    expect(PET_ANIMATIONS).toContain(pet.currentAnimation)
   })
 
   it('should have proper experience for level', () => {
